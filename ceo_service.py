@@ -2,7 +2,6 @@
 
 import os
 import redis
-import json
 from dotenv import load_dotenv
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
@@ -11,6 +10,8 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 # --- Setup ---
 load_dotenv()
 print("## CEO Service: Defining LLM connection...")
+
+# Reverted to using the API key directly from the .env file
 llm = ChatGoogleGenerativeAI(
     model="gemini-1.5-flash",
     temperature=0.7,
@@ -19,17 +20,10 @@ llm = ChatGoogleGenerativeAI(
 
 # --- CEO Prompt Definition ---
 print("## CEO Service: Defining Agent Prompt...")
-# Prompt for the CEO Agent
 ceo_prompt = ChatPromptTemplate.from_messages([
-    ("system",
-     "You are a visionary CEO. Your goal is to develop a comprehensive, "
-     "validated business plan for a new software product. You are data-driven and decisive."),
-    ("human",
-     "Create a detailed business plan for the following idea: {idea}. "
-     "The plan must include market analysis, target audience, monetization strategy, "
-     "and a list of 3-5 key features. Your final output should be a well-structured markdown document.")
+    ("system", "You are a visionary CEO..."),
+    ("human", "Create a detailed business plan for the following idea: {idea}...")
 ])
-
 
 # --- Redis Connection ---
 print("## CEO Service: Connecting to Redis...")
